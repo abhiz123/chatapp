@@ -5,11 +5,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import Paper from "@material-ui/core/Paper";
 import withStyles from "@material-ui/core/styles/withStyles";
-import cssBaseline from "@material-ui/core/cssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import styles from "./styles";
-import CssBaseline from "@material-ui/core/cssBaseline";
+import CssBaseline from "@material-ui/core/CssBaseline";
 const firebase = require("firebase");
 
 class SignupComponent extends React.Component {
@@ -33,6 +32,8 @@ class SignupComponent extends React.Component {
         break;
       case "passwordConfirmation":
         this.setState({ passwordConfirmation: e.target.value });
+        break;
+
       default:
         break;
     }
@@ -121,7 +122,7 @@ class SignupComponent extends React.Component {
             </FormControl>
             <Button
               type="submit"
-              fullwidth
+              fullWidth
               variant="contained"
               colour="primary"
               className={classes.submit}
