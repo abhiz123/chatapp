@@ -3,6 +3,7 @@ import ChatListComponent from "../chatList/chatList";
 import { Button, withStyles } from "@material-ui/core";
 import styles from "./styles";
 import ChatViewComponent from "../chatView/chatView";
+import ChatTextBoxComponent from "../chatTextBox/chatTextBox";
 
 const firebase = require("firebase");
 
@@ -36,6 +37,11 @@ class DashboardComponent extends React.Component {
             chat={this.state.chats[this.state.selectedChat]}
           ></ChatViewComponent>
         )}
+        {this.state.selectedChat !== null && !this.state.newChatFormVisible ? (
+          <ChatTextBoxComponent
+            submitMessageFn={this.submitMessage}
+          ></ChatTextBoxComponent>
+        ) : null}
         <Button className={classes.signOutBtn} onClick={this.signOut}>
           Sign Out
         </Button>
@@ -53,6 +59,28 @@ class DashboardComponent extends React.Component {
 
   newChatButtonClicked = () => {
     this.setState({ newChatFormVisible: true, selectedChat: null });
+  };
+
+  buildDocKey = (friend) => [this.state.email, friend].sort().join(":");
+
+  submitMessage = (msg) => {
+    const docKey = this.buildDocKey(
+      this.state.chats[this.state.selectedChat].users.filter(
+        (_usr) => _usr !== this.state.email
+      )[0]
+    );
+    firebase
+      .firestore()
+      .collection("chats")
+      .doc(docKey)
+      .update({
+        messages: firebase.firestore.FieldValue.arrayUnion({
+          sender: this.state.email,
+          message: msg,
+          timestamp: Date.now(),
+        }),
+        recieverHasRead: false,
+      });
   };
 
   componentDidMount = () => {
