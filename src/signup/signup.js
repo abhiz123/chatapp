@@ -41,7 +41,6 @@ class SignupComponent extends React.Component {
 
   submitSignup = (e) => {
     e.preventDefault();
-    console.log(this.state);
     if (!this.formisValid()) {
       this.setState({ signupError: "Paswords do not match" });
       return;

@@ -10,24 +10,36 @@ class ChatViewComponent extends React.Component {
     }
   };
 
+  componentDidMount = () => {
+    const container = document.getElementById("chatview-container");
+    if (container) container.scrollTo(0, container.scrollHeight);
+  };
+
   render() {
-    const { classes, chat, user } = this.props;
-    if (chat === undefined) {
-      return <main id="chatview-container" className={classes.content}></main>;
-    } else {
+    const { classes } = this.props;
+
+    if (this.props.chat === undefined) {
+      return <main className={classes.content}></main>;
+    } else if (this.props.chat !== undefined) {
       return (
         <div>
           <div className={classes.chatHeader}>
-            Your Conversation with{" "}
-            {chat.users.filter((_usr) => _usr !== user)[0]}
+            Your conversation with{" "}
+            {
+              this.props.chat.users.filter(
+                (_usr) => _usr !== this.props.user
+              )[0]
+            }
           </div>
           <main id="chatview-container" className={classes.content}>
-            {chat.messages.map((_msg, _index) => {
+            {this.props.chat.messages.map((_msg, _index) => {
               return (
                 <div
                   key={_index}
                   className={
-                    _msg.sender === user ? classes.userSent : classes.friendSent
+                    _msg.sender === this.props.user
+                      ? classes.userSent
+                      : classes.friendSent
                   }
                 >
                   {_msg.message}
@@ -37,6 +49,8 @@ class ChatViewComponent extends React.Component {
           </main>
         </div>
       );
+    } else {
+      return <div className="chatview-container">Loading...</div>;
     }
   }
 }

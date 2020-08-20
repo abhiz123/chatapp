@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Route, Link, HashRouter } from "react-router-dom";
 import LoginComponent from "./login/login";
 import SignupComponent from "./signup/signup";
 import DashboardComponent from "./dashboard/dashboard";
@@ -22,13 +22,16 @@ firebase.initializeApp({
 });
 
 const routing = (
-  <Router>
+  <HashRouter basename="/">
     <div id="routing container">
+      <Route path="">
+        <Link to="./signup">Sign Up</Link>
+      </Route>
       <Route path="/login" component={LoginComponent}></Route>
       <Route path="/signup" component={SignupComponent}></Route>
       <Route path="/dashboard" component={DashboardComponent}></Route>
     </div>
-  </Router>
+  </HashRouter>
 );
 
 ReactDOM.render(routing, document.getElementById("root"));

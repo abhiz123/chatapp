@@ -18,7 +18,7 @@ class ChatListComponent extends React.Component {
 
     if (this.props.chats.length > 0) {
       return (
-        <main className={classes.root}>
+        <div className={classes.root}>
           <Button
             variant="contained"
             fullWidth
@@ -62,17 +62,25 @@ class ChatListComponent extends React.Component {
                         </React.Fragment>
                       }
                     ></ListItemText>
+                    {_chat.recieverHasRead === false &&
+                    !this.userIsSender(_chat) ? (
+                      <ListItemIcon>
+                        <NotificationImportant
+                          className={classes.unreadMessage}
+                        ></NotificationImportant>
+                      </ListItemIcon>
+                    ) : null}
                   </ListItem>
                   <Divider></Divider>
                 </div>
               );
             })}
           </List>
-        </main>
+        </div>
       );
     } else {
       return (
-        <main className={classes.root}>
+        <div className={classes.root}>
           <Button
             variant="contained"
             fullWidth
@@ -83,17 +91,19 @@ class ChatListComponent extends React.Component {
             New Message
           </Button>
           <List></List>
-        </main>
+        </div>
       );
     }
   }
+  userIsSender = (chat) =>
+    chat.messages[chat.messages.length - 1].sender === this.props.userEmail;
 
   selectChat = (index) => {
     this.props.selectChatFn(index);
   };
 
   newChat = () => {
-    console.log("clicked new chat");
+    this.props.newChatBtnFn();
   };
 }
 

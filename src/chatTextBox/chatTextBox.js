@@ -36,9 +36,7 @@ class ChatTextBoxComponent extends React.Component {
     }
   };
 
-  userClickedInput = () => {
-    console.log("user clicked input");
-  };
+  userClickedInput = () => this.props.userClickedInputFn();
 
   userTyping = (e) => {
     e.keyCode === 13
